@@ -30,13 +30,12 @@ class TestBooksCollector:
         collector = BooksCollector()
         collector.add_new_book('Легенда')
         collector.add_new_book('Легенда')
-
         assert len(collector.books_rating) == 1
 
     def test_add_book_in_favorites(self):
         collector = BooksCollector()
-        collector.favorites.append('Legend')
-        collector.favorites.append('King')
+        collector.add_new_book('Legend')
+        collector.add_book_in_favorites('Legend')
         assert 'Legend' in collector.get_list_of_favorites_books()
 
     def test_set_book_rating_for_none_element(self):
@@ -61,7 +60,7 @@ class TestBooksCollector:
 
     def test_delete_book_from_favorites(self):
         collector = BooksCollector()
-        collector.favorites.append('Dark')
+        collector.add_book_in_favorites('Dark')
         collector.delete_book_from_favorites('Dark')
         assert 'Dark' not in collector.favorites
 
@@ -73,10 +72,15 @@ class TestBooksCollector:
             collector.add_book_in_favorites(book_name)
         assert collector.favorites == book_list
 
-    def test_set_book_rating_negative(self):
+    def test_set_book_rating_more_than_10(self):
         collector = BooksCollector()
         collector.add_new_book('Harry Potter')
-        collector.add_new_book('Live')
         collector.set_book_rating('Harry Potter', 15)
-        assert collector.books_rating['Harry Potter'] == 1
+        assert collector.books_rating['Harry Potter'] != 15
+
+    def test_set_book_rating_less_than_one(self):
+        collector = BooksCollector()
+        collector.add_new_book('Live')
+        collector.set_book_rating('Live', 0)
+        assert collector.books_rating['Live'] != 0
 
