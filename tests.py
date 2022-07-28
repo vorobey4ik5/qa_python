@@ -41,7 +41,7 @@ class TestBooksCollector:
     def test_set_book_rating_for_none_element(self):
         collector = BooksCollector()
         collector.set_book_rating('Fox', 7)
-        assert collector.get_book_rating('Fox') != 7
+        assert len(collector.get_books_rating()) == 0
 
     def test_get_books_with_specific_rating_certain_rating(self):
         collector = BooksCollector()
@@ -60,9 +60,10 @@ class TestBooksCollector:
 
     def test_delete_book_from_favorites(self):
         collector = BooksCollector()
+        collector.add_new_book('Dark')
         collector.add_book_in_favorites('Dark')
         collector.delete_book_from_favorites('Dark')
-        assert 'Dark' not in collector.favorites
+        assert 'Dark' not in collector.get_list_of_favorites_books()
 
     def test_get_list_of_favorites_books(self):
         collector = BooksCollector()
@@ -70,17 +71,16 @@ class TestBooksCollector:
         for book_name in book_list:
             collector.add_new_book(book_name)
             collector.add_book_in_favorites(book_name)
-        assert collector.favorites == book_list
+        assert collector.get_list_of_favorites_books() == book_list
 
     def test_set_book_rating_more_than_10(self):
         collector = BooksCollector()
         collector.add_new_book('Harry Potter')
         collector.set_book_rating('Harry Potter', 15)
-        assert collector.books_rating['Harry Potter'] != 15
+        assert collector.books_rating['Harry Potter'] == 1
 
     def test_set_book_rating_less_than_one(self):
         collector = BooksCollector()
         collector.add_new_book('Live')
         collector.set_book_rating('Live', 0)
-        assert collector.books_rating['Live'] != 0
-
+        assert collector.books_rating['Live'] == 1
